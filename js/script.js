@@ -1,0 +1,81 @@
+const hour = document.querySelector(".h");
+const min = document.querySelector(".m");
+const sec = document.querySelector(".s");
+const hoursNumber = document.querySelector(".hours");
+const minutesNumber = document.querySelector(".minutes");
+
+function clock() {
+  let time = new Date();
+  let second = time.getSeconds() * 6; //* Градусы
+  let minute = time.getMinutes() * 6; //* Градусы
+  let hours = time.getHours() * 30; //* Градусы
+
+  sec.style.transform = `rotate(${second}deg)`;
+  min.style.transform = `rotate(${minute}deg)`;
+  hour.style.transform = `rotate(${hours}deg)`;
+
+  //*! InnerHTML
+
+  hoursNumber.innerHTML = time.getHours();
+  minutesNumber.innerHTML = time.getMinutes();
+
+  if (hoursNumber.innerHTML.length === 1) {
+    hoursNumber.innerHTML = "0" + time.getHours();
+  }
+  if (minutesNumber.innerHTML.length === 1) {
+    minutesNumber.innerHTML = "0" + time.getMinutes();
+  }
+
+  //! Рекурсия //* Самовызывание функции
+
+  setTimeout(() => {
+    clock();
+  }, 1000);
+}
+
+clock();
+
+const tabsItem = document.querySelectorAll(".tabsItem");
+const tabsContentItem = document.querySelectorAll(".tabsContentItem");
+
+console.log(tabsItem);
+
+tabsItem.forEach((item, index) => {
+  item.addEventListener("click", () => {
+    removeAndAddActiveClass(item, tabsItem);
+    removeAndAddActiveClass(tabsContentItem[index], tabsContentItem);
+  });
+});
+
+function removeAndAddActiveClass(element, arr) {
+  arr.forEach((item) => {
+    item.classList.remove("active");
+  });
+  element.classList.add("active");
+}
+
+// setInterval(() => {
+//     clock()
+// }, 1000);
+let stopwatchHours = document.querySelector(".stopwatch__hours");
+let stopwatchMinutes = document.querySelector(".stopwatch__minutes");
+let stopwatchSeconds = document.querySelector(".stopwatch__seconds");
+let stopwatchBtn = document.querySelector(".stopwatch__btn");
+
+function timeOutSecond() {
+  stopwatchSeconds.innerHTML++;
+  if (stopwatchSeconds.innerHTML === '60') {
+    stopwatchSeconds.innerHTML = '0';
+    stopwatchMinutes.innerHTML++;
+  }
+  if(stopwatchMinutes.innerHTML === '60') {
+    stopwatchMinutes.innerHTML = '0';
+    stopwatchHours.innerHTML++;
+  }
+  setTimeout(() => {
+    timeOutSecond();
+  }, 1000);
+}
+stopwatchBtn.addEventListener("click", () => {
+  timeOutSecond();
+})
