@@ -60,22 +60,80 @@ function removeAndAddActiveClass(element, arr) {
 let stopwatchHours = document.querySelector(".stopwatch__hours");
 let stopwatchMinutes = document.querySelector(".stopwatch__minutes");
 let stopwatchSeconds = document.querySelector(".stopwatch__seconds");
-let stopwatchBtn = document.querySelector(".stopwatch__btn");
+let stopwatchBtn = document.querySelectorAll(".stopwatch__btn");
+let startTimeOutSecondIndicator = document.querySelector(".tabsLink__span");
 
 function timeOutSecond() {
   stopwatchSeconds.innerHTML++;
-  if (stopwatchSeconds.innerHTML === '60') {
-    stopwatchSeconds.innerHTML = '0';
+  if (stopwatchSeconds.innerHTML === "60") {
+    stopwatchSeconds.innerHTML = "0";
     stopwatchMinutes.innerHTML++;
   }
-  if(stopwatchMinutes.innerHTML === '60') {
-    stopwatchMinutes.innerHTML = '0';
+  if (stopwatchMinutes.innerHTML === "60") {
+    stopwatchMinutes.innerHTML = "0";
     stopwatchHours.innerHTML++;
   }
-  setTimeout(() => {
-    timeOutSecond();
+   setTimeout(() => {
+    timeOutSecond()
   }, 1000);
 }
-stopwatchBtn.addEventListener("click", () => {
-  timeOutSecond();
-})
+
+stopwatchBtn.forEach((element) => {
+  element.addEventListener("click", () => {
+    if (element.innerHTML === "start") {
+      element.addEventListener("click", () => {
+        element.innerHTML = "stop";
+        startTimeOutSecondIndicator.classList.add("active");
+      });
+    } else if (element.innerHTML === "stop") {
+      clearTimeout(timeOutSecond());
+      element.addEventListener("click", () => {
+        element.innerHTML = "reset";
+        startTimeOutSecondIndicator.classList.remove("active");
+        startTimeOutSecondIndicator.classList.add("active_clear");
+      });
+    } else if (element.innerHTML === "reset") {
+      element.addEventListener("click", () => {
+        element.innerHTML = "start";
+        startTimeOutSecondIndicator.classList.remove("active_clear");
+        stopwatchSeconds.innerHTML = "0";
+        stopwatchMinutes.innerHTML = "0";
+        stopwatchHours.innerHTML = "0";
+      });
+    }
+  });
+});
+
+// if (stopwatchBtn.innerHTML === "start") {
+//   stopwatchBtn.addEventListener("click", () => {
+//     timeOutSecond();
+//     stopwatchBtn.innerHTML = "stop";
+//     startTimeOutSecondIndicator.classList.add("active");
+//   });
+// }
+
+// if (stopwatchBtn.innerHTML === "stop") {
+//   stopwatchBtn.addEventListener("click", () => {
+//     stopwatchBtn.innerHTML = "reset";
+//     startTimeOutSecondIndicator.classList.remove("active");
+//     startTimeOutSecondIndicator.classList.add("active_clear");
+//   });
+// }
+
+// stopwatchBtn.forEach((element) => {
+//   element.addEventListener("click", () => {
+//     if (element.innerHTML === "start") {
+//       timeOutSecond();
+//       startTimeOutSecondIndicator.classList.add("active");
+//       stopwatchBtn.innerHTML = "stop";
+//       }else if(element.innerHTML === 'stop'){
+//          stopwatchBtn.innerHTML = 'reset'
+//          startTimeOutSecondIndicator.classList.remove("active");
+//          startTimeOutSecondIndicator.classList.add("active_clear")
+//        }else if(element.innerHTML === 'reset'){
+//          startTimeOutSecondIndicator.classList.remove("active_clear")
+//          stopwatchBtn.innerHTML = 'start'
+//        }
+//     }
+//   });
+// });
