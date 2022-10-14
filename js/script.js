@@ -82,11 +82,11 @@ stopwatchBtn.forEach((element) => {
   element.addEventListener("click", () => {
     if (element.innerHTML === "start") {
       element.addEventListener("click", () => {
+        timeOutSecond()
         element.innerHTML = "stop";
         startTimeOutSecondIndicator.classList.add("active");
       });
     } else if (element.innerHTML === "stop") {
-      clearTimeout(timeOutSecond());
       element.addEventListener("click", () => {
         element.innerHTML = "reset";
         startTimeOutSecondIndicator.classList.remove("active");
