@@ -1,62 +1,85 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import "./WebClock.scss"
 const WebClock = () => {
+    //* Устанавливаем значение секунд, минут и часов
     const [time, setTime] = useState(new Date());
+    //* Устанавливаем значение секунд, минут и часов
     let tableHours = time.getHours();
     let tableMinutes = time.getMinutes()
+    //* Устанавливаем значение секунд, минут и часов
     let [second, setSecond] = useState(time.getSeconds() * 6);
     let [minutes, setMinutes] = useState(time.getMinutes() * 6);
     let [hours, setHours] = useState(time.getHours() * 6);
     setTimeout(() => {
+        //Устанавливаем время в setTime и каждую секунду обновляем его значение в new Date()
         setTime(new Date());
+        //* Устанавливаем значение секунд, минут и часов
         setSecond(time.getSeconds() * 6);
         setMinutes(time.getMinutes() * 6);
         setHours(time.getHours() * 6);
     }, 1000)
+    //* Табы
     //* Секундомер
     const tabsItem = document.querySelectorAll(".tabsItem");
     const tabsContentItem = document.querySelectorAll(".tabsContentItem");
+    //* Добавляем обработчик событий на каждый элемент
     tabsItem.forEach((item, index) => {
+        //* Добавляем обработчик событий на каждый элемент
         item.addEventListener("click", () => {
+            //* Удаляем класс active у всех элементов
             removeAndAddActiveClass(item, tabsItem);
+            //* Удаляем класс active у всех элементов
             removeAndAddActiveClass(tabsContentItem[index], tabsContentItem);
         });
+        //* Удаляем класс active у всех элементов
     });
     function removeAndAddActiveClass(element, arr) {
+        //* Удаляем класс active у всех элементов
         arr.forEach((item) => {
+            //* Удаляем класс active
             item.classList.remove("active");
         });
+        //* Добавляем класс active
         element.classList.add("active");
     }
+    //* Таймер
 
     let [timerSeconds, setTimerSeconds] = useState(0)
     let [timerMinutes, setTimerMinutes]= useState(0)
-    let {timerHours, setTimerHours} = useState(0)
+    let [timerHours, setTimerHours] = useState(0)
 
+    //* Таймер
 
-    const [isStart, setIsStart] = useState(false)
-    const startTimer = () => {
-        setTimerSeconds(timerSeconds + 1);
-        if (timerSeconds === 60) {
-            setTimerMinutes(timerMinutes + 1);
-            setTimerSeconds(0)
-        }
-        if (timerMinutes === 60) {
-            setTimerHours(timerHours + 1);
-            setTimerMinutes(0)
-        }
-    }
-    if(isStart){
-        setTimeout(startTimer, 1000)
-    }
-    const setStart = () => {
-        if (isStart) {
-            setIsStart(false)
+    let [timer, setTimer] = useState(0)
+    let [timerId, setTimerId] = useState(0)
+    let [timerStatus, setTimerStatus] = useState(false)
+
+    const startStopwatch = () => {
+        //* Если таймер не запущен, то запускаем его
+        if (!timerStatus) {
+            //* Запускаем таймер
+            setTimerId(
+                // Интервал в 10 милисекунд для точности таймера до 100 милисекунд (1/10 секунды). Также можно использовать setInterval, но тогда таймер будет иметь погрешность в 1 секунду.
+                setInterval(() => {
+                //* Увеличиваем таймер на 1
+                setTimer(timer += 1);
+                //* Устанавливаем значение секунд, минут и часов
+                setTimerSeconds(Math.floor(timer / 100 % 60));
+                setTimerMinutes( Math.floor(timer / 100 / 60 % 60));
+                setTimerHours(Math.floor(timer / 100 / 60 / 60));
+            }, 10));
+            //* Устанавливаем статус таймера в true
+            setTimerStatus(true);
         } else {
-            setIsStart(true)
-            startTimer()
+            //* Останавливаем таймер
+            clearInterval(timerId);
+            //* Устанавливаем статус таймера в false
+            setTimerStatus(false);
         }
+        //* Если таймер запущен, то останавливаем его
     }
+
+
     return (
         <div>
             <div className="tabsPanel">
@@ -110,7 +133,7 @@ const WebClock = () => {
                                 Сек.
                             </div>
                         </div>
-                        <button onClick={setStart} className="stopwatch__btn">{isStart ? "stop" : "start"}</button>
+                        <button onClick={startStopwatch} className="stopwatch__btn">{timerStatus ? "stop" : "start"}</button>
                     </div>
                 </div>
             </div>
