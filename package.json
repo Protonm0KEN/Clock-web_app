@@ -1,6 +1,7 @@
 {
   "name": "clock-web-app",
   "version": "0.1.0",
+  "homepage": "https://protonm0ken.github.io/Clock-web_app/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
